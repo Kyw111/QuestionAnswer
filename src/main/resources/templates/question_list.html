@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<!--<head th:replace="/layout/header.html :: fragment_header">-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">-->
+<head>
+    <meta charset="UTF-8">
+    <title>목록 페이지</title>
+</head>
+<body>
+<div class="container my-3" layout:fragment="content">
+<!--    <div th:replace="/layout/navbar.html :: fragment_navbar"></div>-->
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question, loop : ${questionList}">
+            <td th:text="${loop.count}"></td>
+            <td><a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a></td>
+            <td th:text="${#temporals.format(question.createDate, 'yy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" th:href="@{/question/create}">질문 등록</a>
+</div>
+</body>
+</html>
