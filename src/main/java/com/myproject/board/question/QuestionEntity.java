@@ -1,5 +1,6 @@
 package com.myproject.board.question;
 
+import com.myproject.board.SiteUser.UserEntity;
 import com.myproject.board.answer.AnswerEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,4 +29,9 @@ public class QuestionEntity {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) // 질문 하나에는 여러개의 답변이 작성 - 질문삭제시 해당답변들도 모두 삭제하기 위함
     private List<AnswerEntity> answerList;
+
+    @ManyToOne
+    private UserEntity author;
+
+    private LocalDateTime modifyDate;
 }

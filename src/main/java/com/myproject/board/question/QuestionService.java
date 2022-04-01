@@ -1,6 +1,7 @@
 package com.myproject.board.question;
 
 import com.myproject.board.DataNotFoundException;
+import com.myproject.board.SiteUser.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class QuestionService {
         return modelMapper.map(questionEntity, QuestionDto.class);
     }
 
+    public QuestionEntity of(QuestionDto questionDto){ // dto -> 엔티티로 반환
+        return modelMapper.map(questionDto, QuestionEntity.class);
+    }
+
 
     public Page<QuestionDto> getList(int page){ // 페이징처리를 위해 기존반환타입을 List타입에서 Page타입으로 수정함
 //        List<QuestionEntity> questionEntityList = questionRepository.findAll();
@@ -49,15 +54,36 @@ public class QuestionService {
         }
     }
 
-    public QuestionDto createQuestion(String title, String content) {
-        QuestionEntity questionEntity = new QuestionEntity();
-        questionEntity.setTitle(title);
-        questionEntity.setContent(content);
-        questionEntity.setCreateDate(LocalDateTime.now());
-        questionRepository.save(questionEntity);
-        return of(questionEntity); // 위에서 저장은 entity로 했지만 return은 dto로 변환해서 반환 - service의 반환은 dto로
+    public QuestionDto createQuestion(String title, String content, UserDto userDto) {
+//        QuestionEntity questionEntity = new QuestionEntity();
+//        questionEntity.setTitle(title);
+//        questionEntity.setContent(content);
+//        questionEntity.setCreateDate(LocalDateTime.now());
+//        questionRepository.save(questionEntity);
+//        return of(questionEntity); // 위에서 저장은 entity로 했지만 return은 dto로 변환해서 반환 - service의 반환은 dto로
+
+        QuestionDto questionDto = new QuestionDto();
+        questionDto.setTitle(title);
+        questionDto.setContent(content);
+        questionDto.setCreateDate(LocalDateTime.now());
+        questionDto.setAuthor(userDto);
+        QuestionEntity questionEntity = of(questionDto);
+        this.questionRepository.save(questionEntity);
+        return questionDto;
     }
 
+    public QuestionDto modifyQuestion(String title, String content, QuestionDto questionDto) {
+        questionDto.setTitle(title);
+        questionDto.setContent(content);
+        questionDto.setModifyDate(LocalDateTime.now());
+        QuestionEntity questionEntity = of(questionDto);
+        questionRepository.save(questionEntity);
+        return questionDto;
+    }
+
+    public void deleteQuestion(QuestionDto questionDto) {
+        questionRepository.delete(of(questionDto));
+    }
 
 
 

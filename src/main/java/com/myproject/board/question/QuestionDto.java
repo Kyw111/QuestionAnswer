@@ -1,5 +1,6 @@
 package com.myproject.board.question;
 
+import com.myproject.board.SiteUser.UserDto;
 import com.myproject.board.answer.AnswerDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,4 +17,6 @@ public class QuestionDto {
     private String content;
     private LocalDateTime createDate;
     private List<AnswerDto> answerList;
+    private UserDto author;
+    private LocalDateTime modifyDate;
 }

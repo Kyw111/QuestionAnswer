@@ -1,5 +1,6 @@
 package com.myproject.board.answer;
 
+import com.myproject.board.SiteUser.UserEntity;
 import com.myproject.board.question.QuestionEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,5 +24,10 @@ public class AnswerEntity {
 
     @ManyToOne
     private QuestionEntity question;
+
+    @ManyToOne
+    private UserEntity author;
+
+    private LocalDateTime modifyDate;
 
 }

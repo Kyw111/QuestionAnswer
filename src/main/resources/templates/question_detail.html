@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}"
-      xmlns:layout="http://www.w3.org/1999/xhtml">
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <!--<head th:replace="/layout/header.html :: fragment_header">-->
 <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">-->
 <head>
@@ -18,8 +18,23 @@
                 <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
                 <div class="d-flex justify-content-end">
                     <div class="badge bg-light text-dark p-2 text-start">
+                        <div class="mb-2">
+                            <span th:if="${question.author != null}" th:text="${question.author.username}"></span>
+                        </div>
                         <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
+                </div>
+                <div class="my-3">
+                    <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-warning"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                       th:text="수정"></a>
+                </div>
+                <div class="my-3">
+                    <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}" class="delete btn btn-sm btn-danger"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                       th:text="삭제"></a>
                 </div>
             </div>
         </div>
@@ -33,6 +48,7 @@
                 <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
                 <div class="d-flex justify-content-end">
                     <div class="badge bg-light text-dark p-2 text-start">
+                        <div><span th:if="${answer.author != null}" th:text="${answer.author.username}"></span></div>
                         <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
                 </div>
@@ -44,9 +60,21 @@
             <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
                 <div th:each="error : ${#fields.allErrors()}" th:text="${error}"></div>
             </div>
-            <textarea name="content" th:field="*{content}" rows="5" class="form-control"></textarea>
+            <textarea name="content" sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="5" class="form-control"></textarea>
+            <textarea name="content" sec:authorize="isAuthenticated()" th:field="*{content}" rows="5" class="form-control"></textarea>
             <input type="submit" value="답변 등록" class="btn btn-primary my-2">
         </form>
 </div>
+
+<script layout:fragment="script" type="text/javascript">
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
 </body>
 </html>

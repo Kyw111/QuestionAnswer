@@ -16,7 +16,7 @@ class BoardApplicationTests {
 		for(int i = 1; i <= 50; i++){
 			String testTitle = String.format("질문 있습니다%d", i);
 			String testContent = String.format("질문 내용%d", i);
-			questionService.createQuestion(testTitle, testContent);
+			questionService.createQuestion(testTitle, testContent, null);
 		}
 
 	}

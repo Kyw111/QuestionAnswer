@@ -1,4 +1,4 @@
-<html lagn="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lagn="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -19,7 +19,11 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">로그인</a>
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/signup}">회원가입</a>
                 </li>
             </ul>
         </div>
@@ -33,5 +37,9 @@
 
 <!-- Bootstrap JS -->
 <script th:src="@{/js/bootstrap.min.js}"></script>
+
+<!-- 자바스크립트문 작성할 내용 시작 --><!--이렇게 설정해두면 layout.html을 상속하는 템플릿들은 자바스크립트를 어느 위치에든 작성할수있음 개꿀-->
+<th:block layout:fragment="script"></th:block>
+<!-- 자바스크립트문 작성할 내용 끝 -->
 </body>
 </html>
