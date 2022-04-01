@@ -8,10 +8,30 @@
     <title>게시판</title>
 </head>
 <body>
+<!-- 네브바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">홈</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">로그인</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 네브바 끝 -->
 
-<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+<!-- 여기는 각 템플릿에서 작성할 내용 시작 -->
 <th:block layout:fragment="content"></th:block>
-<!-- 기본 템플릿 안에 삽입될 내용 End -->
+<!-- 여기는 각 템플릿에서 작성할 내용 끝 -->
 
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>
