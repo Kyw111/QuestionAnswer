@@ -79,7 +79,7 @@ public class QuestionController {
         }
 
         QuestionDto questionDto = questionService.getQuestion(id);
-        if (!questionDto.getAuthor().getUsername().equals(principal.getName())) {
+        if (!questionDto.getAuthor().getUsername().equals(principal.getName())) { // 로그인한 사용자와 질문작성자가 동일한지 검증
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.questionService.modifyQuestion(questionForm.getTitle(), questionForm.getContent(), questionDto);

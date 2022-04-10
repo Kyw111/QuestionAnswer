@@ -1,5 +1,6 @@
 package com.myproject.board.answer;
 
+import com.myproject.board.DataNotFoundException;
 import com.myproject.board.SiteUser.UserDto;
 import com.myproject.board.question.QuestionDto;
 import com.myproject.board.question.QuestionEntity;
@@ -22,8 +23,12 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
     private final ModelMapper modelMapper;
 
-    public AnswerEntity of(AnswerDto answerDto){ //dto를 entity로 변환
+    public AnswerEntity of(AnswerDto answerDto){ // dto를 entity로 변환
         return modelMapper.map(answerDto, AnswerEntity.class); // map( 이것을 -> 이것으로 변환 );
+    }
+
+    public AnswerDto of(AnswerEntity answerEntity){ // entity를 dto로 변환
+        return modelMapper.map(answerEntity, AnswerDto.class); // map( 이것을 -> 이것으로 변환 );
     }
 
 
@@ -39,5 +44,20 @@ public class AnswerService {
         return answerDto;
     }
 
+    public AnswerDto getAnswer(Integer id){
+        Optional<AnswerEntity> answerEntity = answerRepository.findById(id);
+        if (answerEntity.isPresent()) {
+            return of(answerEntity.get());
+        }
+        else {
+            throw new DataNotFoundException("답변을 찾을 수 없습니다.");
+        }
+    }
 
+    public AnswerDto modifyAnswer(AnswerDto answerDto, String content){
+        answerDto.setContent(content);
+        answerDto.setModifyDate(LocalDateTime.now());
+        answerRepository.save(of(answerDto));
+        return answerDto;
+    }
 }
