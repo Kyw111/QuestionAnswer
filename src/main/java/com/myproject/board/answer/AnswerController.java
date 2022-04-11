@@ -42,7 +42,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String answerModify(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
+    public String Modify(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
         AnswerDto answerDto = answerService.getAnswer(id);
         if (!answerDto.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -53,7 +53,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String answerModify(@PathVariable Integer id, @Valid AnswerForm answerForm,
+    public String Modify(@PathVariable Integer id, @Valid AnswerForm answerForm,
                          Principal principal, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "answer_form";
@@ -67,6 +67,20 @@ public class AnswerController {
         return String.format("redirect:/question/detail/%s", answerDto.getQuestion().getId());
 //        return "redirect:/question/detail/{id}";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, Principal principal){
+        AnswerDto answerDto = answerService.getAnswer(id);
+
+        if(!answerDto.getAuthor().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        answerService.deleteAnswer(answerDto);
+        return String.format("redirect:/question/detail/%s", answerDto.getQuestion().getId());
+//        return "redirect:/question/detail/{id}";
+    }
+
 
 
 }

@@ -60,4 +60,8 @@ public class AnswerService {
         answerRepository.save(of(answerDto));
         return answerDto;
     }
+
+    public void deleteAnswer(AnswerDto answerDto){
+        answerRepository.delete(of(answerDto));
+    }
 }
